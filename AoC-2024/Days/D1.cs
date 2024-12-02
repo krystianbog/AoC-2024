@@ -6,15 +6,18 @@ internal static class D1
     {
         Console.WriteLine("D1 init");
 
-        string _inputFilePath = Path.Combine(AppContext.BaseDirectory, @"Inputs\InputD1.txt");
-        const string _inputLineSeparator = "\n";
+        string inputFilePath = Path.Combine(AppContext.BaseDirectory, @"Inputs\InputD1.txt");
 
-        var input = File.ReadAllText(_inputFilePath);
-        var inputList = input.Split(_inputLineSeparator).Where(x => !string.IsNullOrEmpty(x)).ToList();
-        
+        string input = File.ReadAllText(inputFilePath);
+
+        List<string> inputList = input
+            .Split("\n")
+            .Where(x => !string.IsNullOrEmpty(x))
+            .ToList();
+
         List<int> leftList = new();
         List<int> rightList = new();
-        
+
         foreach (var inputLine in inputList)
         {
             var inputValues = inputLine.Split("   ");
@@ -26,15 +29,22 @@ internal static class D1
         leftList.Sort();
         rightList.Sort();
 
-        List<int> values = new();
+        int absoluteDifferenceSum = 0;
 
         for (int i = 0; i < leftList.Count; i++)
         {
-            values.Add(Math.Abs(leftList[i] - rightList[i]));
+            absoluteDifferenceSum += Math.Abs(leftList[i] - rightList[i]);
         }
 
-        var res = values.Sum();
+        Console.WriteLine($"D1 PT1: {absoluteDifferenceSum}");
 
-        Console.WriteLine($"D1 PT1: {res}");
+        int multiplierSum = 0;
+
+        foreach (var value in leftList)
+        {
+            multiplierSum += value * rightList.Count(x => x == value);
+        }
+
+        Console.WriteLine($"D1 PT2: {multiplierSum}");
     }
 }
